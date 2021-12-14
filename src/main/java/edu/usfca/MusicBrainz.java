@@ -93,13 +93,13 @@ public class MusicBrainz {
         return returnAlbum;
     }
 
-    public static String songMB(String albumSearch) {
+    public static String songMB(String songSearch) {
 
         String returnSong = "";
         String artistS = "";
-        String albumS
-        String search = albumSearch.replaceAll(" ", "+");
-        String initialURL = "https://musicbrainz.org/ws/2/release-group/?query=album+AND+" + search;
+        String albumS = "";
+        String search = songSearch.replaceAll(" ", "+");
+        String initialURL = "https://musicbrainz.org/ws/2/recording/?query=" + search;
 
         Node subNode;
         try {
@@ -112,33 +112,43 @@ public class MusicBrainz {
 
             Document doc = db.parse(u.getInputStream());
             /* let's get the artist-list node */
-            NodeList albums = doc.getElementsByTagName("release-group-list");
+            NodeList songs = doc.getElementsByTagName("recording-list");
             /* let's assume that the one we want is first. */
-            Node albumNode = albums.item(0).getFirstChild();
-            NodeList albumNodes = albumNode.getChildNodes();
+            Node songNode = songs.item(0).getFirstChild();
+            NodeList songNodes = songNode.getChildNodes();
 
-            returnAlbum = getContent(albumNode.getFirstChild());
-            System.out.println(returnAlbum);
+            returnSong = getContent(songNode.getFirstChild());
+            System.out.println(returnSong);
 
-            for(int i = 0; i < albumNodes.getLength(); i++){
-                subNode = albumNodes.item(i);
+            for(int i = 0; i < songNodes.getLength(); i++){
+                subNode = songNodes.item(i);
                 if(subNode.getNodeName().equals("artist-credit")){
-                    artistN = getContent(subNode.getFirstChild().getFirstChild());
+                    artistS = getContent(subNode.getFirstChild().getFirstChild());
                 }
             }
-            System.out.println(artistN);
+            System.out.println(artistS);
+
+            for(int j = 0; j < songNodes.getLength(); j++){
+                subNode = songNodes.item(j);
+                if(subNode.getNodeName().equals("release-list")){
+                    albumS = getContent(subNode.getFirstChild().getFirstChild());
+                }
+            }
+            System.out.println(albumS);
 
         } catch (Exception ex) {
             System.out.println("XML parsing error" + ex);
         }
-        return returnAlbum;
+        return returnSong;
     }
 
 
 
     public static void main(String[] args){
         //artistMB("judas priest");
-        albumMB("joshua tree");
+        //albumMB("joshua tree");
+        songMB("Where the streets have no name");
+
     }
 
 
