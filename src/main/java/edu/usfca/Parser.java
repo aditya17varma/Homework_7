@@ -11,8 +11,6 @@ public class Parser {
     static Library l1 = new Library();
     static Playlist p1 = new Playlist();
     static Playlist p2 = new Playlist();
-    static Playlist mergedPlaylist = new Playlist();
-    static HashMap<String, Playlist> playlistMap = new HashMap<>();
     static HashMap<String, Artist> artistMap = new HashMap<>();
     static HashMap<String, Album> albumMap = new HashMap<>();
 
@@ -41,10 +39,6 @@ public class Parser {
             albumMap.put(album.name, album);
         }
     }
-
-//    public void parseXML(String filename){
-//        xmlP.parse(filename);
-//    }
 
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -107,8 +101,10 @@ public class Parser {
 
                 case 4:
                     //Add song to library
+                    Scanner cs4 = new Scanner(System.in);
                     System.out.println("What is the name of the song?");
-                    String songName = input.nextLine();
+                    String songName = cs4.nextLine();
+
                     if (l1.containsSong(songName)){
                         System.out.println("That song already exists in the library!!");
                     } else {
@@ -117,31 +113,39 @@ public class Parser {
                         temp.songID = libSize + 1;
 
                         System.out.println("If you know the artist? Type \"yes\".");
-                        if(input.nextLine().equals("yes")){
+                        if(cs4.nextLine().equals("yes")){
                             System.out.println("Type the artist name: \"artist\"");
-                            String songArt = input.nextLine();
+                            String songArt = cs4.nextLine();
                             if (artistMap.containsKey(songArt)){
                                 temp.getPerformer().setName(songArt);
+                                temp.toSQL();
                             } else {
                                 Artist tempArt = new Artist(songArt);
                                 int artSize = artistMap.size();
                                 tempArt.artistID = artSize + 1;
+                                temp.toSQL();
                             }
                         } else {
+                            System.out.println("Accessing MusicBrainz, please wait.");
                             String[] info = MusicBrainz.songMB(songName);
+                            temp.setName(info[0]);
                             temp.getPerformer().setName(info[1]);
                             temp.getAlbum().setName(info[2]);
+                            System.out.println("Song data added from MusicBrainz");
+                            temp.toSQL();
                         }
-                        temp.toSQL();
+
                     }
+                    cs4.close();
                     loadLibrary();
                     break;
 
 
                 case 5:
                     //Delete song from library
+                    Scanner cs5 = new Scanner(System.in);
                     System.out.println("What is the name of the song you would like to delete?");
-                    String delSong = input.nextLine();
+                    String delSong = cs5.nextLine();
                     if(l1.containsSong(delSong)){
                         String insertString = "delete from songs where name = " + delSong + ";";
                         Connection connectionS = null;
@@ -170,6 +174,7 @@ public class Parser {
                     } else {
                         System.out.println("That song is not in the library!");
                     }
+                    cs5.close();
                     break;
 
 

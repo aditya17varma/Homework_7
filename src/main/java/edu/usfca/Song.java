@@ -28,6 +28,10 @@ public class Song extends Entity {
 
     }
 
+    public void setName(String n){
+        this.name = n;
+    }
+
     public String getVibe() {
         return vibe;
     }
