@@ -3,15 +3,12 @@ package edu.usfca;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 public class Parser {
     XMLParser xmlP;
-    static Library l1;
+    static Library l1 = new Library();
     static Playlist p1 = new Playlist();
     static Playlist p2 = new Playlist();
     static Playlist mergedPlaylist = new Playlist();
@@ -51,7 +48,6 @@ public class Parser {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-        Parser p = new Parser();
         Scanner input = new Scanner(System.in);
         boolean condition = true;
 
@@ -74,15 +70,14 @@ public class Parser {
                     "6. Add artist to library.\n" +
                     "7. Add album to library.\n" +
 
-                    "8. Create a playlist.\n" +
+                    "8. Create a playlist of songs by a certain artist.\n" +
                     "9. List songs in a playlist\n" +
                     "10. Add a song to a playlist.\n" +
                     "11. Delete a song from playlist.\n" +
-                    "12. Create a playlist of songs with a certain artist.\n" +
 
-                    "13. Write the playlist out to a XML file.\n" +
-                    "14. Write the library out to a XML file.\n" +
-                    "15. Stop the program!");
+                    "12. Write the playlist out to a XML file.\n" +
+                    "13. Write the library out to a XML file.\n" +
+                    "14. Stop the program!");
 
             int selection = 0;
             selection = input.nextInt();
@@ -100,13 +95,15 @@ public class Parser {
                     //List all artists in library
                     for(String key: artistMap.keySet()){
                         System.out.println(key);
-                }
+                    }
+                    break;
 
                 case 3:
                     //List all albums in library
                     for(String key: albumMap.keySet()){
                         System.out.println(key);
                     }
+                    break;
 
                 case 4:
                     //Add song to library
@@ -138,7 +135,6 @@ public class Parser {
                         temp.toSQL();
                     }
                     loadLibrary();
-
                     break;
 
 
@@ -177,180 +173,126 @@ public class Parser {
                     break;
 
 
-
-                case 2:
-                    //songs in playlist
-                    System.out.println("Which playlist would you like to see? Type \"Playlist p1\" or \"Playlist p2\".");
-                    Scanner playS = new Scanner(System.in);
-                    String case2Input = playS.nextLine();
-                    if (case2Input.equals("Playlist p1")){
-                        ArrayList<Song> p1Songs = p1.getPlaylistSongs();
-                        for(Song p1Song: p1Songs){
-                            System.out.println(p1Song.name);
-                        }
-                    } else if (case2Input.equals("Playlist p2")){
-                        ArrayList<Song> p2Songs = p1.getPlaylistSongs();
-                        for(Song p2Song: p2Songs){
-                            System.out.println(p2Song.name);
-                        }
-                    } else {
-                        System.out.println("Choose the correct playlist");
-                    }
-                    playS.close();
-                    break;
-
-                case 3:
-                    //Add song to playlist
-                    System.out.println("What is the name of the song?");
-                    Scanner in1 = new Scanner(System.in);
-                    String songName = in1.nextLine();
-                    System.out.println("Type \"p1\" or \"p2\" to choose which playlist to add to.");
-                    String case3Input = in1.nextLine();
-                    if (case3Input.equals("p1")){
-                        try{
-                            if (filename.contains(".xml")) {
-                                p1.addSong(p.xmlP.xmlLibrary.getSong(songName));
-                                System.out.println("Song has been added to Playlist p1.");
-                            }
-                        } catch (InputMismatchException e){
-                            System.out.println("Song not in library");
-                        }
-                    } else if(case3Input.equals("p2")){
-                        try{
-                            if (filename.contains(".xml")) {
-                                p2.addSong(p.xmlP.xmlLibrary.getSong(songName));
-                                System.out.println("Song has been added to Playlist p2.");
-                            }
-                        } catch (InputMismatchException e){
-                            System.out.println("Song not in library");
-                        }
-                    } else {
-                        System.out.println("Please type \"p1\" or \"p2\"");
-                    }
-                    in1.close();
-                    break;
-
-                case Playlist:
-                    String playlistName = selectPlaylist();
-                    if(!playlistMap.containsKey(playlistName)){
-                        System.out.println("Wanna add? Type \"yes\"");
-                        if (scanner.nextLine.equals("yes")){
-                            tempPlaylist = new Playlist();
-                            tempPlaylist.addSong();
-                            playlistMap.put(playlistName, tempPlaylist);
-                            System.out.println(Playlist created!);
-                            break;
-                        }
-                        break;
-                    }
-                    //if playlist exists
-                    playlistMap.get(playlistName).addSong();
-                    System.out.println("Song added to playlist");
-                    break;
-
-
-                case 4:
-                    //merge two playlist
-                    System.out.println("Merge playlist p1 and p2?");
-                    mergedPlaylist= p1.mergePlaylist(p2);
-                    System.out.println("p1 and p2 have been merged!");
-                    System.out.println("The contents of the merged playlist:");
-                    for(Song mergedS: mergedPlaylist.listOfSongs){
-                        System.out.println(mergedS.name);
-                    }
-                    break;
-
-                case 5:
-                    //Delete song from playlist
-                    System.out.println("What is the name of the song you would like to delete from playlist p1?");
-                    Scanner in3 = new Scanner(System.in);
-                    String delSong = in3.nextLine();
-                    if (filename.contains(".xml")) {
-                        p1.deleteSong(p.xmlP.xmlLibrary.getSong(delSong));
-                        System.out.println("Song has been deleted from Playlist p1.");
-                    }
-                    in3.close();
-                    break;
-
                 case 6:
-                    //sort playlist
-                    Playlist sorted = p1.sortLikedFirst();
-                    System.out.println("Playlist p1 has been sorted with liked songs first.");
-                    for (Song song : sorted.listOfSongs) {
-                        System.out.println(song.name);
+                    //Add artist
+                    System.out.println("What is the name of the artist?");
+                    String artName = input.nextLine();
+                    if(artistMap.containsKey(artName)){
+                        System.out.println("That artist is already in the library!!");
+                    } else{
+                        Artist temp = new Artist(MusicBrainz.artistMB(artName));
+                        //add to sql
+                        int artSize = artistMap.size();
+                        temp.artistID = artSize + 1;
+                        temp.toSQL();
                     }
+                    hashArtist();
                     break;
 
                 case 7:
-                    //shuffle the playlist
-                    Playlist shuffled = p1.shuffle();
-                    System.out.println("Playlist p1 has been shuffled.");
-                    for (Song song : shuffled.listOfSongs) {
-                        System.out.println(song.name);
+                    //Add album
+                    System.out.println("What is the name of the album?");
+                    String albName = input.nextLine();
+                    if(albumMap.containsKey(albName)){
+                        System.out.println("That album is already in the library!!");
+                    } else{
+                        Album temp = new Album(MusicBrainz.albumMB(albName));
+                        //add to sql
+                        int albSize = albumMap.size();
+                        temp.albumID = albSize + 1;
+                        temp.toSQL();
                     }
+                    hashAlbum();
                     break;
 
                 case 8:
-                    //Create a playlist of songs based on vibe
-                    System.out.println("What vibe do you want to create a playlist with?");
-                    Scanner inVibe = new Scanner(System.in);
-                    String vibe = inVibe.nextLine();
-                    try{
-                        if (filename.contains(".xml")) {
-                            Playlist vibes = p1.shuffleVibe(p.xmlP.xmlLibrary, vibe);
-                            for (Song vibeSong : vibes.listOfSongs) {
-                                System.out.println(vibeSong.name + " vibe: " + vibeSong.getVibe());
+                    //Create Playlist
+                    System.out.println("What is the name of the artist you would like to create a playlist with?");
+                    System.out.println("Type \"artist\"");
+                    String artPlay = input.nextLine();
+                    if(artistMap.containsKey(artPlay)){
+                        for(Song song: l1.librarySongs){
+                            if (song.performer.name.equals(artPlay)){
+                                p1.addSong(song);
                             }
                         }
-                    } catch (NullPointerException e){
-                        System.out.println("Vibe not found in library!");
+                    } else{
+                        System.out.println("That artist is not in the library!!");
                     }
-                    inVibe.close();
                     break;
 
                 case 9:
-                    //Write playlist to xml
-                    String xmlText = p1.toXML();
-                    File output = new File("output.xml");
-                    PrintWriter out = new PrintWriter(output);
-                    out.println(xmlText);
-                    out.close();
+                    //List songs in playlist
+                    if(p1.listOfSongs.size() > 0){
+                        String playArt = p1.listOfSongs.get(0).performer.name;
+                        System.out.printf("Here are all the songs by %s", playArt);
+                        for(Song song: p1.listOfSongs){
+                            System.out.println(song.name);
+                        }
+                    } else {
+                        System.out.println("Create a playlist first!!");
+                    }
                     break;
 
                 case 10:
-                    //Write library to xml
-                    if (filename.contains(".xml")) {
-                        String libXMLText = p.xmlP.xmlLibrary.toXML();
-                        File outputLib = new File("output.xml");
-                        PrintWriter out2 = new PrintWriter(outputLib);
-                        out2.println(libXMLText);
-                        out2.close();
+                    //Add song to playlist
+                    System.out.println("What is the name of the song you would like to add to the playlist?");
+                    String sPlay = input.nextLine();
+                    if (l1.containsSong(sPlay)){
+                        p1.addSong(l1.getSong(sPlay));
+                        break;
+                    } else{
+                        System.out.println("That song needs to be added to the library first!!");
                     }
                     break;
 
                 case 11:
+                    //Delete song from playlist
+                    System.out.println("What is the name of the song you would like to remove from the playlist?");
+                    String pDel = input.nextLine();
+                    if(l1.containsSong(pDel)){
+                        Song temp = l1.getSong(pDel);
+                        if(p1.listOfSongs.contains(temp)){
+                            p1.deleteSong(temp);
+                            break;
+                        } else{
+                            System.out.println("That song is not in the playlist!!");
+                            break;
+                        }
+                    } else {
+                        System.out.println("That song is not in the library!!");
+                    }
+                    break;
+
+                case 12:
+                    //Playlist to XML
+                    if(p1.listOfSongs.size() > 0){
+                        String xmlText = p1.toXML();
+                        File output = new File("playlist.xml");
+                        PrintWriter out = new PrintWriter(output);
+                        out.println(xmlText);
+                        out.close();
+                    } else{
+                        System.out.println("The playlist is empty!!");
+                    }
+                    break;
+
+                case 13:
+                    //Write library to xml
+                    String libXMLText = l1.toXML();
+                    File outputLib = new File("library.xml");
+                    PrintWriter out2 = new PrintWriter(outputLib);
+                    out2.println(libXMLText);
+                    out2.close();
+                    break;
+
+                case 14:
                     //Terminate
                     System.out.println("Thank you!");
                     condition = false;
                     break;
-
-
-                //System.out.println(p.xmlP.xmlLibrary.getSongs());
-                //System.out.println(p.jsonP.jsonLibrary.getSongs());
-
-
             }
         }
     }
-
-    private static String selectPlaylist(){
-        Scanner sSP = new Scanner(System.in);
-        System.out.println("Type the name of the playlist you wish to select");
-        return sSP.nextLine();
-    }
-
-
-
-
 
 }
