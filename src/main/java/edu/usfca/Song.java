@@ -1,6 +1,8 @@
 package edu.usfca;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Song extends Entity {
@@ -85,12 +87,12 @@ public class Song extends Entity {
 
             statement.executeUpdate(insertString);
 
-            ResultSet rsSong = statement.executeQuery("select * from songs");
-            while (rsSong.next()) {
-                // read the result set
-                System.out.println("name = " + rsSong.getString("name"));
-                System.out.println("id = " + rsSong.getInt("id"));
-            }
+//            ResultSet rsSong = statement.executeQuery("select * from songs");
+//            while (rsSong.next()) {
+//                // read the result set
+//                System.out.println("name = " + rsSong.getString("name"));
+//                System.out.println("id = " + rsSong.getInt("id"));
+//            }
         } catch (SQLException e) {
             // if the error message is "out of memory",
             // it probably means no database file is found
@@ -106,7 +108,8 @@ public class Song extends Entity {
         }
     }
 
-    public void fromSQL(){
+    public List<Song> fromSQL(){
+        List<Song> export = new ArrayList<>();
 
         Connection connectionS = null;
         try {
@@ -135,8 +138,10 @@ public class Song extends Entity {
                     temp.setAlbum(new Album(rsAlbum.getString("name"), albID));
                 }
 
+                export.add(temp);
 
-                System.out.println("Song: " + temp.name + ", ID: " + temp.songID + "; artist: " + temp.performer.name + "; album: " + temp.album.name);
+
+                //System.out.println("Song: " + temp.name + ", ID: " + temp.songID + "; artist: " + temp.performer.name + "; album: " + temp.album.name);
 
             }
         } catch (SQLException e) {
@@ -152,6 +157,7 @@ public class Song extends Entity {
                 System.err.println(e.getMessage());
             }
         }
+        return export;
     }
 
 

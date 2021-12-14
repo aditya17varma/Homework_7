@@ -45,7 +45,7 @@ public class MusicBrainz {
             NodeList artistNodes = artistNode.getChildNodes();
 
             returnArtist = getContent(artistNode.getFirstChild());
-            System.out.println(returnArtist);
+            //System.out.println(returnArtist);
 
         } catch (Exception ex) {
             System.out.println("XML parsing error" + ex);
@@ -93,8 +93,9 @@ public class MusicBrainz {
         return returnAlbum;
     }
 
-    public static String songMB(String songSearch) {
+    public static String[] songMB(String songSearch) {
 
+        String[] returnList = new String[3];
         String returnSong = "";
         String artistS = "";
         String albumS = "";
@@ -118,7 +119,8 @@ public class MusicBrainz {
             NodeList songNodes = songNode.getChildNodes();
 
             returnSong = getContent(songNode.getFirstChild());
-            System.out.println(returnSong);
+            //System.out.println(returnSong);
+            returnList[0] = returnSong;
 
             for(int i = 0; i < songNodes.getLength(); i++){
                 subNode = songNodes.item(i);
@@ -126,7 +128,8 @@ public class MusicBrainz {
                     artistS = getContent(subNode.getFirstChild().getFirstChild());
                 }
             }
-            System.out.println(artistS);
+            returnList[1] = artistS;
+            //System.out.println(artistS);
 
             for(int j = 0; j < songNodes.getLength(); j++){
                 subNode = songNodes.item(j);
@@ -134,12 +137,15 @@ public class MusicBrainz {
                     albumS = getContent(subNode.getFirstChild().getFirstChild());
                 }
             }
-            System.out.println(albumS);
+            //System.out.println(albumS);
+            returnList[2] = albumS;
 
         } catch (Exception ex) {
             System.out.println("XML parsing error" + ex);
         }
-        return returnSong;
+        //returns [songName, artistName, albumName]
+        return returnList;
+
     }
 
 

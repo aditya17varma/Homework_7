@@ -37,6 +37,15 @@ public class Library {
         return (librarySongs.contains(s));
     }
 
+    public boolean containsSong(String s){
+        for (Song song: librarySongs){
+            if (song.name.equals(s)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ArrayList<Song> getLiked() {
         likedSongs = new ArrayList<>();
         for (Song song: librarySongs){

@@ -2,6 +2,7 @@ package edu.usfca;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Artist extends Entity {
 
@@ -79,8 +80,9 @@ public class Artist extends Entity {
         }
     }
 
-    public void fromSQL(){
+    public List<Artist> fromSQL(){
         Connection connectionS = null;
+        List<Artist> export = new ArrayList<>();
         try {
             // create a database connection
             connectionS = DriverManager.getConnection("jdbc:sqlite:music.db");
@@ -91,7 +93,8 @@ public class Artist extends Entity {
             while (rsSong.next()) {
                 Artist temp = new Artist(rsSong.getString("name"));
                 temp.setID(rsSong.getInt("id"));
-                System.out.println("Artist: " + temp.name + ", ID: " + temp.artistID + "; type: " + temp.getClass());
+                //System.out.println("Artist: " + temp.name + ", ID: " + temp.artistID + "; type: " + temp.getClass());
+                export.add(temp);
             }
         } catch (SQLException e) {
             // if the error message is "out of memory",
@@ -106,6 +109,7 @@ public class Artist extends Entity {
                 System.err.println(e.getMessage());
             }
         }
+        return export;
     }
 
 }

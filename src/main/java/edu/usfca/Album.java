@@ -2,6 +2,7 @@ package edu.usfca;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Album extends Entity {
     protected ArrayList<Song> songs;
@@ -91,7 +92,8 @@ public class Album extends Entity {
         }
     }
 
-    public void fromSQL(){
+    public List<Album> fromSQL(){
+        List<Album> export = new ArrayList<>();
         Connection connectionAl = null;
         try {
             // create a database connection
@@ -103,7 +105,8 @@ public class Album extends Entity {
             while (rsSong.next()) {
                 Album temp = new Album(rsSong.getString("name"));
                 temp.setID(rsSong.getInt("id"));
-                System.out.println("Album: " + temp.name + ", ID: " + temp.albumID + "; type: " + temp.getClass());
+                //System.out.println("Album: " + temp.name + ", ID: " + temp.albumID + "; type: " + temp.getClass());
+                export.add(temp);
             }
         } catch (SQLException e) {
             // if the error message is "out of memory",
@@ -118,6 +121,7 @@ public class Album extends Entity {
                 System.err.println(e.getMessage());
             }
         }
+        return export;
     }
 }
 
