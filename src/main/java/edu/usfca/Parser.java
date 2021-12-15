@@ -73,8 +73,8 @@ public class Parser {
                     "13. Write the library out to a XML file.\n" +
                     "14. Stop the program!");
 
-            int selection = 0;
-            selection = input.nextInt();
+            int selection;
+            selection = Integer.parseInt(input.nextLine());
 
             switch (selection) {
 
@@ -101,9 +101,9 @@ public class Parser {
 
                 case 4:
                     //Add song to library
-                    Scanner cs4 = new Scanner(System.in);
+                    //Scanner cs4 = new Scanner(System.in);
                     System.out.println("What is the name of the song?");
-                    String songName = cs4.nextLine();
+                    String songName = input.nextLine();
 
                     if (l1.containsSong(songName)){
                         System.out.println("That song already exists in the library!!");
@@ -113,9 +113,9 @@ public class Parser {
                         temp.songID = libSize + 1;
 
                         System.out.println("If you know the artist? Type \"yes\".");
-                        if(cs4.nextLine().equals("yes")){
+                        if(input.nextLine().equals("yes")){
                             System.out.println("Type the artist name: \"artist\"");
-                            String songArt = cs4.nextLine();
+                            String songArt = input.nextLine();
                             if (artistMap.containsKey(songArt)){
                                 temp.getPerformer().setName(songArt);
                                 temp.toSQL();
@@ -131,21 +131,47 @@ public class Parser {
                             temp.setName(info[0]);
                             temp.getPerformer().setName(info[1]);
                             temp.getAlbum().setName(info[2]);
+                            //Add artist to artist table
+                            String tempArt = info[1];
+                            if(artistMap.containsKey(tempArt)){
+                                temp.getPerformer().setID(artistMap.get(tempArt).artistID);
+                            } else{
+                                Artist tempA = new Artist(tempArt);
+                                //add to sql
+                                int artSize = artistMap.size();
+                                tempA.artistID = artSize + 1;
+                                tempA.toSQL();
+                            }
+                            hashArtist();
+
+                            //Add album to album table
+                            String tempAlb = info[2];
+                            if(albumMap.containsKey(tempAlb)){
+                                temp.getAlbum().setID(albumMap.get(tempAlb).albumID);
+                            } else{
+                                Album tempAl = new Album(tempAlb);
+                                //add to sql
+                                int albSize = albumMap.size();
+                                tempAl.albumID = albSize + 1;
+                                tempAl.toSQL();
+                            }
+                            hashAlbum();
+
                             System.out.println("Song data added from MusicBrainz");
                             temp.toSQL();
                         }
 
                     }
-                    cs4.close();
+                    //cs4.close();
                     loadLibrary();
                     break;
 
 
                 case 5:
                     //Delete song from library
-                    Scanner cs5 = new Scanner(System.in);
+                    //Scanner cs5 = new Scanner(System.in);
                     System.out.println("What is the name of the song you would like to delete?");
-                    String delSong = cs5.nextLine();
+                    String delSong = input.nextLine();
                     if(l1.containsSong(delSong)){
                         String insertString = "delete from songs where name = " + delSong + ";";
                         Connection connectionS = null;
@@ -174,7 +200,7 @@ public class Parser {
                     } else {
                         System.out.println("That song is not in the library!");
                     }
-                    cs5.close();
+                    //cs5.close();
                     break;
 
 
