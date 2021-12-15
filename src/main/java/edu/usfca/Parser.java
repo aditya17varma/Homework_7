@@ -173,7 +173,8 @@ public class Parser {
                     System.out.println("What is the name of the song you would like to delete?");
                     String delSong = input.nextLine();
                     if(l1.containsSong(delSong)){
-                        String insertString = "delete from songs where name = " + delSong + ";";
+                        String delID = String.valueOf(l1.getSong(delSong).songID);
+                        String insertString = "delete from songs where id = " + delID + ";";
                         Connection connectionS = null;
                         try {
                             // create a database connection
@@ -201,6 +202,7 @@ public class Parser {
                         System.out.println("That song is not in the library!");
                     }
                     //cs5.close();
+                    loadLibrary();
                     break;
 
 
@@ -247,6 +249,7 @@ public class Parser {
                                 p1.addSong(song);
                             }
                         }
+                        System.out.println("Playlist created!!\n");
                     } else{
                         System.out.println("That artist is not in the library!!");
                     }
@@ -256,10 +259,11 @@ public class Parser {
                     //List songs in playlist
                     if(p1.listOfSongs.size() > 0){
                         String playArt = p1.listOfSongs.get(0).performer.name;
-                        System.out.printf("Here are all the songs by %s", playArt);
+                        System.out.printf("Here are all the songs by %s: \n", playArt);
                         for(Song song: p1.listOfSongs){
                             System.out.println(song.name);
                         }
+                        System.out.println();
                     } else {
                         System.out.println("Create a playlist first!!");
                     }
@@ -302,6 +306,7 @@ public class Parser {
                         File output = new File("playlist.xml");
                         PrintWriter out = new PrintWriter(output);
                         out.println(xmlText);
+                        System.out.println("Playlist XML created!!\n");
                         out.close();
                     } else{
                         System.out.println("The playlist is empty!!");
@@ -314,6 +319,7 @@ public class Parser {
                     File outputLib = new File("library.xml");
                     PrintWriter out2 = new PrintWriter(outputLib);
                     out2.println(libXMLText);
+                    System.out.println("Library XML created!!\n");
                     out2.close();
                     break;
 
