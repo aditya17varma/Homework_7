@@ -6,7 +6,7 @@ import edu.usfca.Song;
 import org.junit.jupiter.api.Test;
 
 
-
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,14 +29,12 @@ class SongTest {
 
     }
 
-    @org.junit.jupiter.api.Test
-    void toSQL() {
-        s1.toSQL();
-    }
-
     @Test
     void fromSQL() {
-        s1.fromSQL();
+        List<Song> sTest = s1.fromSQL();
+        for(Song song: sTest){
+            System.out.println("Song name: " + song.name + " ID: " + song.songID);
+        }
     }
 
     @Test

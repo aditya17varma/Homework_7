@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PlaylistTest {
     Playlist p1, p2, p3;
     Song s1, s2, s3, s4, s5, s6;
-    Library l1;
 
     @BeforeEach
     void setUp() {
@@ -35,7 +34,7 @@ class PlaylistTest {
         p1.addSong(s1);
         p1.addSong(s2);
         assertTrue(p1.listOfSongs.contains(s1));
-        assertFalse(p1.listOfSongs.contains(s2));
+        assertTrue(p1.listOfSongs.contains(s2));
     }
 
     @Test

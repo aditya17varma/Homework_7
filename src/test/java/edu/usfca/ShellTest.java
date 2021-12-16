@@ -3,7 +3,7 @@ package edu.usfca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ParserTest {
+class ShellTest {
     Shell s;
     Library l1;
     Song s1, s2, s3, s4, s5, s6, s7, s8;

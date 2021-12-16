@@ -3,6 +3,8 @@ package edu.usfca;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArtistTest {
@@ -15,13 +17,12 @@ class ArtistTest {
 
     }
 
-    @Test
-    void toSQL() {
-        a1.toSQL();
-    }
 
     @Test
     void fromSQL() {
-        a1.fromSQL();
+        List<Artist> artTest = a1.fromSQL();
+        for (Artist art: artTest){
+            System.out.println("Artist name: " + art.name + " ID: " + art.artistID);
+        }
     }
 }
