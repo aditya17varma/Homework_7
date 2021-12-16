@@ -9,7 +9,13 @@ import java.util.Scanner;
  * Includes a method to export the library to an XML file.
  */
 public class Library {
+    /**
+     * ArrayList of all songs in the Library.
+     */
     public ArrayList<Song> librarySongs;
+    /**
+     * ArrayList of all songs that are 'liked' in the Library.
+     */
     private ArrayList<Song> likedSongs;
 
     /**

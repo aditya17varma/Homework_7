@@ -12,9 +12,21 @@ import java.util.List;
  */
 public class Artist extends Entity {
 
+    /**
+     * List of Songs performed by the Artist.
+     */
     protected ArrayList<Song> songs;
+    /**
+     * List of Albums performed by the Artist.
+     */
     protected ArrayList<Album> albums;
+    /**
+     * Iterator to keep track of the artistID.
+     */
     protected int artistCounter = 0;
+    /**
+     * ID given to count the number of Artists and keep track of index in database.
+     */
     protected int artistID;
 
     /**

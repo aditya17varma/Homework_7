@@ -11,6 +11,9 @@ import java.util.Set;
  * Includes a method to export the playlist to an XML file.
  */
 public class Playlist extends Entity {
+    /**
+     * ArrayList of all the songs in the Playlist.
+     */
     protected ArrayList<Song> listOfSongs;
 
     /**

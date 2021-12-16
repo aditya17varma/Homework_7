@@ -10,9 +10,21 @@ import java.util.*;
  * This class implements a switch case that lets you run the program in the terminal.
  */
 public class Shell {
+    /**
+     * Library into which the database is loaded.
+     */
     static Library l1 = new Library();
+    /**
+     * The Playlist.
+     */
     static Playlist p1 = new Playlist();
+    /**
+     * HashMap to load Artists from the artist table in the database. Key = Artist name, Value = Artist object.
+     */
     static HashMap<String, Artist> artistMap = new HashMap<>();
+    /**
+     * HashMap to load Albums from the album table in the database. Key = Album name, Value = Album object.
+     */
     static HashMap<String, Album> albumMap = new HashMap<>();
 
     /**

@@ -11,9 +11,21 @@ import java.util.List;
  * Includes a method to write to and fetch data from a database using SQL.
  */
 public class Album extends Entity {
+    /**
+     * List of all the songs on the Album.
+     */
     protected ArrayList<Song> songs;
+    /**
+     * The Artist that performed the Album.
+     */
     protected Artist artist;
+    /**
+     * Iterator to keep track of albumID.
+     */
     protected int albumcounter = 0;
+    /**
+     * ID given to count the number of Albums and keep track of index in the database.
+     */
     protected int albumID;
 
     /**

@@ -7,9 +7,21 @@ import java.util.Date;
  *
  */
 public class Entity {
+    /**
+     * The name of the Entity.
+     */
     protected String name;
+    /**
+     * Iterator to keep track of EntityID.
+     */
     protected static int counter = 0;
+    /**
+     * ID to keep track of the total number of Entities.
+     */
     protected int entityID;
+    /**
+     * Date the Entity was created.
+     */
     protected Date dateCreated;
 
     /**
