@@ -47,45 +47,6 @@ class PlaylistTest {
     }
 
     @Test
-    void sortLikedFirst() {
-        p1.addSong(s1);
-        p1.addSong(s2);
-        p1.addSong(s3);
-        p1.addSong(s4);
-        System.out.println("Before sort:");
-        for (Song song: p1.listOfSongs){
-            System.out.println(song.name);
-        }
-
-        System.out.println("");
-
-        System.out.println("After sort:");
-        p2 = p1.sortLikedFirst();
-        for (Song song: p2.listOfSongs){
-            System.out.println(song.name);
-        }
-    }
-
-    @Test
-    void shuffle() {
-        p1.addSong(s1);
-        p1.addSong(s2);
-        p1.addSong(s3);
-        p1.addSong(s4);
-        System.out.println("Before shuffle:");
-        for (Song song: p1.listOfSongs){
-            System.out.println(song.name);
-        }
-        System.out.println("");
-        System.out.println("After shuffle:");
-        p2 = p1.shuffle();
-        for (Song song: p2.listOfSongs){
-            System.out.println(song.name);
-        }
-
-    }
-
-    @Test
     void mergePlaylist() {
         p1.addSong(s1);
         p1.addSong(s2);
@@ -103,23 +64,6 @@ class PlaylistTest {
         }
 
 
-
-    }
-
-
-    @Test
-    void shuffleVibe() {
-        l1.addSongs(s1);
-        l1.addSongs(s2);
-        l1.addSongs(s3);
-        l1.addSongs(s4);
-        l1.addSongs(s5);
-        l1.addSongs(s6);
-
-        p2 = p1.shuffleVibe(l1,"ratchet");
-        for (Song song: p2.listOfSongs){
-            System.out.println(song.name);
-        }
 
     }
 

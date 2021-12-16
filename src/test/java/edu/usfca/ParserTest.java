@@ -4,14 +4,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ParserTest {
-    Parser p;
+    Shell s;
     Library l1;
     Song s1, s2, s3, s4, s5, s6, s7, s8;
     Playlist p1, p2, p3, p4, p5;
 
     @BeforeEach
     void setUp() {
-        p = new Parser();
+        s = new Shell();
         p1 = new Playlist();
         p2 = new Playlist();
         p3 = new Playlist();
@@ -71,21 +71,7 @@ class ParserTest {
         for (Song song: p3.listOfSongs){
             System.out.println(song.name);
         }
-        System.out.println("");
 
-        p4 = p3.shuffleVibe(l1, "ratchet");
-        System.out.println("ratchet playlist:");
-        for (Song song: p4.listOfSongs){
-            System.out.println(song.name + "; Vibe: " + song.vibe);
-        }
-        System.out.println("");
-
-        p5 = p3.sortLikedFirst();
-        System.out.println("like first:");
-        for (Song song: p5.listOfSongs){
-            System.out.println(song.name + "; Liked: " + song.liked);
-        }
-        System.out.println("");
 
         System.out.println("As xml:");
         String xmlText = p3.toXML();
