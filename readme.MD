@@ -1,47 +1,19 @@
 Homework #7. Putting it all together.
 
-Due: December 16, 11:59pm.
+This program is run through the Shell class.
+Running the main method in Shell starts a simple user-interface in the terminal,
+through which the user can access the multiple features of the program.
 
-This homework will be graded using specifications grading. There are a sequence of tasks to complete. Grades will be assigned as follows:
+The program loads all the songs in the songs table in the music.db database into a Library class. 
+Relevant data from the artist and album tables in database is used to fill out the instance variables of the Song object.
+Any addition or deletion of Songs is reflected in the songs table in the database.
+The Library is re-loaded after each addition or deletion of Songs to accurately reflect the database.
+Since the Library reflects the data in the database, users can add Artists and Albums to the database independent of Songs.
 
-To receive a C, you should complete tasks 1-3
-To receive a B, complete all the C-level tasks, plus task 4.
-To receive an A, complete the B-level tasks, plus tasks 5 and 6.
-In this assignment, you'll integrate some of the pieces and components from our earlier work to develop a complete program for managing our music.
-Please note that, for this assignment, we'll be focusing on the management portion of the task. Two pieces that we won't integrate are:
+The user can also create a Playlist that contains all the Songs in the Library by a single Artist.
+The interface in Shell allows the user to choose which Artist to create the Playlist on.
 
-A tool for playing music files. The java.io.* package provides support for this, but it can be a little tricky to deal with all the different formats and codecs.
-A GUI for managing music. We haven't dealt much with developing graphical user interfaces in this class; the old-school way to do this would be as a standalone application using Swing, but most modern approaches instead do this inside a web browser using Javascript.
-These are both great extensions, and well within your skillset, and could make for a really fun project over break to extend your expertise.
+If the user so desires, the Library and the Playlist can be written out as an XML file.
 
-What we will do here is integrate some of the work from previous labs and homeworks to build a tool that can manage a music collection and load information from third-party repositories.
-You probably have quite a bit of this code developed already, so this homework will be more about polishing and integrating than new development. I've described what to accomplish in terms of specifications: that is, what your code should do.
-You can make your own design decisions about how to implement this. I encourage you to be creative, add features that you think are interesting, and have fun.
 
-The goal is to develop a program with a text-based UI that can do the following:
 
-Task 1:
-    Display the user's songs, artists, and albums.
-Task 2:
-    Prompt the user for a new song, artist, or album and then fill in any missing data.
-Task 3:
-    Generate XML files that contain a playlist based on a particular criterion, such as genre, mood, or artist.
-Task 4:
-    Specific tasks to implement include:
-
-    You should implement a UI that can take basic text-based commands. I will let you decide on the format for this.
-    Your songs, artists, and albums should all be stored in a SQLite database, with separate tables for each datatype.
-    You should be able to generate XML files containing a playlist. (you probably have this from the past lab.)
-    Your program should allow a user to partially specify a song, artist, or album, and then use a third-party tool to fill in missing details. You may use either:
-    TheAudioDB. They have a REST-based API that returns JSON. You can find more information here: https://www.theaudiodb.com/api_guide.php (Links to an external site.)
-    MusicBrainz. They also have a REST-based API; it can return either XML or JSON. You can find more info on this here: https://musicbrainz.org/doc/MusicBrainz_API (Links to an external site.)
-    You might also want to use these services to fill in other data, such as description, genre, running time, etc.
-
-You should also include the following: 
-Task 5: 
-    Please use Javadoc to generate documentation for all of the classes in your homework. This should include a short readme explaining how to run your code. 
-Task 6:
-    Please use maven to create and organize your project. When you're completed, you should be able to use maven to:
-        automatically run unit tests
-        regenerate documentation
-        compile a JAR.

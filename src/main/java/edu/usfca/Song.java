@@ -4,7 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * This class creates a Song object, an extension of Entity.
+ * This class includes various methods used to facilitate usage of Song.
+ * The instance variables that we used in this HW are: name, album, performer, and songID.
+ * Includes a method to write to and fetch data from a database using SQL.
+ */
 public class Song extends Entity {
     protected Album album;
     protected Artist performer;
@@ -13,6 +18,11 @@ public class Song extends Entity {
     protected int songCounter = 0;
     protected int songID;
 
+    /**
+     * Constructor for Song
+     * Initialized with blank Album, blank Artist, blank vibe, liked set to false.
+     * @param name The name of the Song you would like to construct.
+     */
     public Song(String name) {
         super(name);
         album = new Album();
@@ -24,61 +34,116 @@ public class Song extends Entity {
 
     }
 
+    /**
+     * Creates an empty Song constructor, to be used when we need to construct a Song object for which we don't have a name yet.
+     */
     public Song() {
 
     }
 
+    /**
+     * This method allows you to set the name of the Song object.
+     * @param n The String you would like to set as the name.
+     */
     public void setName(String n){
         this.name = n;
     }
 
+    /**
+     * Allows you to fetch the vibe of the Song
+     * @return returns the vibe of the song as a String
+     */
     public String getVibe() {
         return vibe;
     }
 
+
+    /**
+     * Allows you to set the vibe of a song
+     * @param vibe The String you would like to set as the vibe.
+     */
     public void setVibe(String vibe) {
         this.vibe = vibe;
     }
 
+    /**
+     * Set the songID, separate from EntityID, the iteration of songID is for Songs only.
+     * @param id The int you would like to set as the songID.
+     */
     public void setID(int id){
         songID = id;
     }
 
+    /**
+     * Fetch the SongID.
+     * @return The SongID as an int.
+     */
     public int getID(){
         return songID;
     }
 
 
+    /**
+     * Fetches the Album object associated with the Song.
+     * @return Album object.
+     */
     protected Album getAlbum() {
 
         return album;
     }
 
+    /**
+     * Allows you to set an Album object as the Album of the Song.
+     * @param album Album you would like to set.
+     */
     protected void setAlbum(Album album) {
         this.album = album;
     }
 
+    /**
+     * Fetches the Artist object associated with this Song.
+     * @return Artist of the Song.
+     */
     public Artist getPerformer() {
         return performer;
     }
 
+    /**
+     * Allows you to set the Artist object associated with this Song.
+     * @param performer The Artist you would like to set.
+     */
     public void setPerformer(Artist performer) {
         this.performer = performer;
     }
 
+    /**
+     * Check whether a Song is liked or not.
+     * @return The boolean value for whether the Song is liked.
+     */
     public boolean isLiked() {
         return liked;
     }
 
+    /**
+     * Set whether the Song is liked or not.
+     * @param liked The boolean value you want to set for liked.
+     */
     public void setLiked(boolean liked) {
         this.liked = liked;
     }
 
+    /**
+     * Convert the information held by the Song object to a String.
+     * @return The Song and it's Artist, and Album as a single String.
+     */
     public String toString() {
         return super.toString() + " " + this.performer + " " + this.album;
 
     }
 
+    /**
+     * This method allows you to write the information associated with the Song object to the songs table in music.db, by using sqlite3.
+     */
     public void toSQL(){
         String insertString = "insert into songs values (" + this.songID + ", \'" + this.name + "\', \'" + this.performer.artistID + "\', \'" + this.album.albumID + "\');";
 
@@ -112,6 +177,11 @@ public class Song extends Entity {
         }
     }
 
+    /**
+     * This method converts the information in the songs table of music.db and returns a list populated by Song objects
+     * for each Song in the songs table.
+     * @return List of Songs.
+     */
     public List<Song> fromSQL(){
         List<Song> export = new ArrayList<>();
 

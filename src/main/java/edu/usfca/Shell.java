@@ -6,19 +6,18 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.util.*;
 
-public class Parser {
-    XMLParser xmlP;
+/**
+ * This class implements a switch case that lets you run the program in the terminal.
+ */
+public class Shell {
     static Library l1 = new Library();
     static Playlist p1 = new Playlist();
-    static Playlist p2 = new Playlist();
     static HashMap<String, Artist> artistMap = new HashMap<>();
     static HashMap<String, Album> albumMap = new HashMap<>();
 
-    public Parser() {
-        xmlP = new XMLParser();
-    }
-
-
+    /**
+     * This method loads all the songs from the song table into a Library.
+     */
     private static void loadLibrary(){
         List<Song> importSongs = new Song().fromSQL();
         for (Song song: importSongs){
@@ -26,6 +25,12 @@ public class Parser {
         }
     }
 
+    /**
+     * This method implements a HashTable with all the Artists in the database along with their artistID.
+     * The name of the Artist is used as a key to access the Artist object.
+     * This method loads data from the artist table on each call.
+     * The size of this HashMap is used to properly index additions to the artist table in the database.
+     */
     private static void hashArtist(){
         List<Artist> importArtists = new Artist().fromSQL();
         for (Artist artist: importArtists){
@@ -33,6 +38,12 @@ public class Parser {
         }
     }
 
+    /**
+     * This method implements a HashTable with all the Albums in the database along with their albumID.
+     * The name of the Album is used as a key to access the Album object.
+     * This method load data from the albums table on each call.
+     * The size of this HashMap is used to properly index additions to the albums table in the database.
+     */
     private static void hashAlbum(){
         List<Album> importAlbums = new Album().fromSQL();
         for (Album album: importAlbums){
@@ -41,6 +52,12 @@ public class Parser {
     }
 
 
+    /**
+     * Main function that contains the switch-case to run on the terminal.
+     * The switch-case allows the user to access the multitude of options available within the program.
+     * @param args
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         boolean condition = true;

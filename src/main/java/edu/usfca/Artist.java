@@ -4,6 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class creates an Artist object, an extension of Entity.
+ * This class includes various methods used to facilitate usage of Artist.
+ * The instance variables that we used in this HW are: name, and albumID.
+ * Includes a method to write to and fetch data from a database using SQL.
+ */
 public class Artist extends Entity {
 
     protected ArrayList<Song> songs;
@@ -11,49 +17,68 @@ public class Artist extends Entity {
     protected int artistCounter = 0;
     protected int artistID;
 
+    /**
+     * Constructor for Artist.
+     * @param name The name of the Artist you would like to construct.
+     */
     public Artist(String name) {
         super(name);
         artistCounter ++;
         artistID = 0;
     }
 
+    /**
+     * Creates an empty Artist constructor, to be used when we need to construct an Artist object for which we don't have a name yet.
+     */
     public Artist() {
 
     }
 
+    /**
+     * Constructor for Artist, when a particular ArtistID is to be used.
+     * @param name The name of the Artist you would like to construct.
+     * @param id The ArtistID you would like to set.
+     */
     public Artist(String name, int id){
         super(name);
         artistID = id;
     }
 
+    /**
+     * Set the artistID, separate from EntityID, the iteration of artistID is for Artists only.
+     * @param id The int you would like to set as the artistID.
+     */
     public void setID(int id){
         this.artistID = id;
     }
 
-    public int getID(){
-        return this.artistID;
-    }
+//    public int getID(){
+//        return this.artistID;
+//    }
+//
+//    protected ArrayList<Song> getSongs() {
+//        return songs;
+//    }
+//
+//    protected void setSongs(ArrayList<Song> songs) {
+//        this.songs = songs;
+//    }
+//
+//    protected ArrayList<Album> getAlbums() {
+//        return albums;
+//    }
+//
+//    protected void setAlbums(ArrayList<Album> albums) {
+//        this.albums = albums;
+//    }
+//
+//    public void addSong(Song s) {
+//        songs.add(s);
+//    }
 
-    protected ArrayList<Song> getSongs() {
-        return songs;
-    }
-
-    protected void setSongs(ArrayList<Song> songs) {
-        this.songs = songs;
-    }
-
-    protected ArrayList<Album> getAlbums() {
-        return albums;
-    }
-
-    protected void setAlbums(ArrayList<Album> albums) {
-        this.albums = albums;
-    }
-
-    public void addSong(Song s) {
-        songs.add(s);
-    }
-
+    /**
+     * This method allows you to write the information associated with the Artist object to the artist table in music.db, by using sqlite3.
+     */
     public void toSQL(){
         String insertString = "insert into artist (id, name) values (" + this.artistID + ", \'" + this.name + "\' );";
 
@@ -80,6 +105,11 @@ public class Artist extends Entity {
         }
     }
 
+    /**
+     * This method converts the information in the artist table of music.db and returns a list populated by Artist objects
+     * for each Artist in the artist table.
+     * @return List of Artists.
+     */
     public List<Artist> fromSQL(){
         Connection connectionS = null;
         List<Artist> export = new ArrayList<>();

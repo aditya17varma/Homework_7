@@ -4,12 +4,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class creates an Album object, an extension of Entity.
+ * This class includes various methods used to facilitate usage of Album.
+ * The instance variables that we used in this HW are: name, Artist, and albumID.
+ * Includes a method to write to and fetch data from a database using SQL.
+ */
 public class Album extends Entity {
     protected ArrayList<Song> songs;
     protected Artist artist;
     protected int albumcounter = 0;
     protected int albumID;
 
+    /**
+     * Constructor for Album.
+     * Initialized with blank Artist, and empty list of songs.
+     * @param name The name of the Artist you would like to construct.
+     */
     public Album(String name) {
         super(name);
         artist = new Artist("");
@@ -17,55 +28,81 @@ public class Album extends Entity {
         albumcounter ++;
         albumID = 0;
     }
-
+    /**
+     * Creates an empty Album constructor, to be used when we need to construct an Album object for which we don't have a name yet.
+     */
     public Album() {
 
     }
 
+    /**
+     * Constructs an Album object when the name is given, and a particular albumID is to be used.
+     * @param s The name of the Album.
+     * @param id The albumID of the Album.
+     */
     public Album(String s, int id){
         super(s);
         albumID = id;
     }
 
+    /**
+     * Fetches the name of the Album object.
+     * @return The name of the album as a String.
+     */
     public String getName() {
         System.out.println("this is an album" + super.getName());
         return name;
     }
 
+    /**
+     * Set the AlbumID, separate from EntityID, the iteration of AlbumID is for Albums only.
+     * @param id The int you would like to set as the albumID.
+     */
     public void setID(int id) {
         this.albumID = id;
     }
 
-    public int getID() {
-        return this.albumID;
-    }
+//    public int getID() {
+//        return this.albumID;
+//    }
+//
+//    public boolean equals(Album otherAlbum) {
+//        if ((this.artist.equals(otherAlbum.getArtist())) &&
+//                (this.name.equals(otherAlbum.getName()))) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+//
+//
+//    protected ArrayList<Song> getSongs() {
+//        return songs;
+//    }
+//
+//    protected void setSongs(ArrayList<Song> songs) {
+//        this.songs = songs;
+//    }
 
-    public boolean equals(Album otherAlbum) {
-        if ((this.artist.equals(otherAlbum.getArtist())) &&
-                (this.name.equals(otherAlbum.getName()))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    protected ArrayList<Song> getSongs() {
-        return songs;
-    }
-
-    protected void setSongs(ArrayList<Song> songs) {
-        this.songs = songs;
-    }
-
+    /**
+     * Fetches the Artist associated with this Album
+     * @return The Artist of the Album.
+     */
     public Artist getArtist() {
         return artist;
     }
 
+    /**
+     * Allows you to set the Artist for the Album.
+     * @param artist The Artist you would like to set for this Album.
+     */
     public void setArtist(Artist artist) {
         this.artist = artist;
     }
 
+    /**
+     * This method allows you to write the information associated with the Album object to the album table in music.db, by using sqlite3.
+     */
     public void toSQL(){
         String insertString = "insert into album (id, name) values (" + this.albumID + ", \'" + this.name + "\' );";
 
@@ -92,6 +129,11 @@ public class Album extends Entity {
         }
     }
 
+    /**
+     * This method converts the information in the album table of music.db and returns a list populated by Album objects
+     * for each Album in the album table.
+     * @return List of Albums.
+     */
     public List<Album> fromSQL(){
         List<Album> export = new ArrayList<>();
         Connection connectionAl = null;

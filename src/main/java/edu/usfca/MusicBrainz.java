@@ -9,8 +9,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * This class allows you to fetch data about the Song, Artist or Ablum from MusicBrainz.db
+ */
 public class MusicBrainz {
 
+    /**
+     * This method is used to access the data contained within child nodes in the XML file
+     * @param n The node you want to access.
+     * @return The value of the Node as a String.
+     */
     public static String getContent(Node n) {
         StringBuilder sb = new StringBuilder();
         Node child = n.getFirstChild();
@@ -18,6 +26,12 @@ public class MusicBrainz {
         return sb.toString();
     }
 
+    /**
+     * For a given artist name, this method queries MusicBrainz to access the XML file associated with the artist name.
+     * If a query returns multiple hits, the method assumes the first artist in the list is the intended target.
+     * @param artistSearch The name of the artist to be searched.
+     * @return The name of the artist as contained in MusicBrainz.
+     */
     public static String artistMB(String artistSearch) {
 
         String search = artistSearch.replaceAll(" ", "+");
@@ -53,6 +67,12 @@ public class MusicBrainz {
         return returnArtist;
     }
 
+    /**
+     * For a given album name, this method queries MusicBrainz to access the XML file associated with the album name.
+     * If a query returns multiple hits, the method assumes the first album in the list is the intended target.
+     * @param albumSearch The name of the album to be searched.
+     * @return The name of the album as contained in MusicBrainz.
+     */
     public static String albumMB(String albumSearch) {
 
         String returnAlbum = "";
@@ -93,6 +113,13 @@ public class MusicBrainz {
         return returnAlbum;
     }
 
+    /**
+     * For a given song name, this method queries MusicBrainz to access the XML file associated with the song name.
+     * If a query returns multiple hits, the method assumes the first song in the list is the intended target.
+     * The method returns information on the name of the Songs, the performing Artist, and the Album it appears in.
+     * @param songSearch The name of the song to be searched.
+     * @return An Array of Strings that contains the Song name, Artist name, and Album name.
+     */
     public static String[] songMB(String songSearch) {
 
         String[] returnList = new String[3];
@@ -148,14 +175,12 @@ public class MusicBrainz {
 
     }
 
-
-
-    public static void main(String[] args){
-        //artistMB("judas priest");
-        //albumMB("joshua tree");
-        songMB("Where the streets have no name");
-
-    }
+//    public static void main(String[] args){
+//        //artistMB("judas priest");
+//        //albumMB("joshua tree");
+//        songMB("Where the streets have no name");
+//
+//    }
 
 
 }
