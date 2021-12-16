@@ -19,6 +19,16 @@
     <maven.compiler.target>17.0.1</maven.compiler.target>
   </properties>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.3</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -37,6 +47,11 @@
       <artifactId>sqlite-jdbc</artifactId>
       <version>3.36.0.3
       </version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-site-plugin</artifactId>
+      <version>3.3</version>
     </dependency>
   </dependencies>
 
@@ -88,11 +103,18 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.3</version>
+          <configuration>
+            <outputDirectory>${project.build.directory}</outputDirectory>
+            <reportOutputDirectory>${project.reporting.outputDirectory}</reportOutputDirectory>
+            <version>3.3</version>
+          </configuration>
           <executions>
             <execution>
               <id>attach-javadocs</id>
+              <phase>site</phase>
               <goals>
-                <goal>jar</goal>
+                <goal>aggregate</goal>
               </goals>
             </execution>
           </executions>
